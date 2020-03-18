@@ -1,0 +1,10 @@
+.slick-dots {
+    bottom: 20px !important;
+    &>li button::before {
+        color: white !important;
+    }
+}
+
+.slick-active button {
+    color: white !important;
+}

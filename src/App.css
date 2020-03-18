@@ -1,0 +1,43 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+button {
+    cursor: pointer;
+}
+
+body {
+    background: #ebebeb;
+}
+
+h1 {
+    font-family: 'Gotham-Bold';
+}
+
+p,
+a {
+    font-family: 'Gotham-Book';
+}
+
+@font-face {
+    font-family: 'Gotham-Bold';
+    font-style: normal;
+    font-weight: bold;
+    src: local('Gotham-Bold'), local('Gotham-Bold'), url(./fonts/Gotham-Bold.otf) format('opentype');
+}
+
+@font-face {
+    font-family: 'Gotham-Medium';
+    font-style: normal;
+    font-weight: medium;
+    src: local('Gotham-Medium'), local('Gotham-Medium'), url(./fonts/Gotham-Medium.otf) format('opentype');
+}
+
+@font-face {
+    font-family: 'Gotham-Book';
+    font-style: normal;
+    font-weight: 350;
+    src: local('Gotham-Book'), local('Gotham-Book'), url(./fonts/Gotham-Book.otf) format('opentype');
+}
