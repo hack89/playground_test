@@ -1,0 +1,62 @@
+/* GRIGLIA PERSONALIZZATA UTILIZZANDO GRID-CSS */
+    
+html 
+    box-sizing: border-box
+ 
+*,
+*:before,
+*:after 
+    box-sizing: inherit
+ 
+body
+    margin: 0
+    padding: 0
+
+.container
+  margin-left: auto
+  margin-right: auto
+  padding-left: 15px
+  padding-right: 15px
+
+/* MEDIA CONTAINER */
+
+@media (min-width: 768px)
+  .container
+    width: 750px
+
+@media (min-width: 992px)
+  .container
+    width: 970px
+
+@media (min-width: 1200px)
+  .container
+    width: 1170px
+
+$columns: 12
+
+.row
+  display: grid
+  grid-template-columns: repeat($columns, 1fr)
+  grid-gap: 20px
+
+@for $i from 1 through $columns
+    .col-xs-#{$i}
+        grid-column: span $i
+
+/* MEDIA ROWS */
+    
+@media (min-width: 768px)
+   @for $i from 1 through $columns
+    .col-sm-#{$i}
+        grid-column: span $i
+
+@media (min-width: 992px)
+   @for $i from 1 through $columns
+    .col-md-#{$i}
+        grid-column: span $i
+  
+@media (min-width: 1200px)
+   @for $i from 1 through $columns
+    .col-lg-#{$i}
+        grid-column: span $i
+
