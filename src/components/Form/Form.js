@@ -1,5 +1,6 @@
-import React, {useState, useEffect} from 'react'
+import React from 'react'
 import styled from 'styled-components'
+import {useForm} from "react-hook-form";
 import './formStyle.scss'
 
 
@@ -96,82 +97,14 @@ const SmallErrorMessage = styled.small`
     font-family: 'Gotham-Book';
 `
 const Form = ({id}) => {
-    const [isValidMessage, setIsValidMessage] = useState(false)
-    const [isSubmitting, setIsSubmitting] = useState(false)
-    const [isValid, setIsValid] = useState(false)
-    const [formData, setFormData] = useState(
-        {   
-            firstName: '',
-            lastName: '',
-            email: '',
-            message: '',
-            emailError: '',
-            messageError: ''
-        }
-    )
-
-        useEffect(()=>{
-            if(isSubmitting){
-               
-            if(isValid && isValidMessage ){
-                setFormData({...formData, emailError: ''})
-                setIsSubmitting(false)
-                setIsValid(false)
-                setIsValidMessage(false)
-                alert('Message sent!')
-                setFormData({
-                    firstName: '',
-                    lastName: '',
-                    email: '',
-                    message: '',
-                    emailError: '',
-                    messageError: ''
-                })
-            }
-                 
-            }
-        },[isValid, isValidMessage, isSubmitting])
     
-    const checkEmail = (input) => {
-        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        if (re.test(input.trim())) {
-           setIsValid(true)
-        } else {
-            setIsValid(false)
-            setFormData({...formData, emailError: 'Invalid email'})
-        }
-    }
-
-    const checkMessage = (input) => {
-         
-        if (input.trim().length > 0) {
-            setIsValidMessage(true)
-        } else {
-            setIsValidMessage(false)
-            setFormData({...formData, messageError: 'Message required'})
-            setTimeout(()=>{
-                setFormData({...formData, messageError: ''})
-            },5000)
-        }
-    }
-
-
-    const onChange =e=> {
-        setFormData({...formData, [e.target.id]: e.target.value})
-        
-    }
-
+    const {register, handleSubmit, errors} = useForm()
+  
+    const onSubmit = data => {
+        console.log(data);
+    };
     
-
-    const onSubmit=e=> {
-        e.preventDefault()
-        checkEmail(formData.email)
-        checkMessage(formData.message)
-        setIsSubmitting(true)
-    }
-
     
-
     return (
         <BannerWrapper id={id}>
             <BannerText>
@@ -187,32 +120,41 @@ const Form = ({id}) => {
                 </ElementsText>
             </BannerText>
             <FormFields>
-                    <form id="form" className="form" onSubmit={onSubmit}>
+                    <form id="form" className="form" onSubmit={handleSubmit(onSubmit)}>
                         <div className="names">
                         <div className="form-control">
-                            <input type="text" id="firstName" onChange={e => onChange(e)} value={formData.firstName}  placeholder="name" />
+                            <input name='firstName' ref={register} placeholder='first name' />
                             
                         </div>
                         <div className="form-control">
-                            <input type="text" onChange={e => onChange(e)} value={formData.lastName}  id="lastName" placeholder="last name" />
+                            <input name='lastName' ref={register} placeholder='last name' />
                             
                         </div>
                         </div>
                         <div className="form-control">
-                            <input type="text" id="email" onChange={e => onChange(e)} value={formData.email} required placeholder="email" />
-                            <SmallErrorMessage formData={formData} id='email_error'  isValid={isValid}>
-                                 {formData.emailError}
+                        <input name="email" placeholder='email' ref={register({ 
+                             required: 'Email is required',
+                             pattern: {
+                                 value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                                 message: "invalid email address"
+                             }})} />
+                            <SmallErrorMessage id='email_error'>
+                                 {errors.email &&  errors.email.message}
                             </SmallErrorMessage>
                         </div>
                     
                         <div className="form-control">
-                            <textarea type="text" id="message" value={formData.message} onChange={e => onChange(e)} required placeholder="message" />
-                            <SmallErrorMessage id='message_error' formData={formData}>
-                            {!formData.messageError ? '' : formData.messageError 
-
-                            
-                            }
-                            </SmallErrorMessage>
+                            <textarea name="message" id="messaggio" placeholder='message'  ref={register({
+                                 required: 'Message is required',
+                                 pattern: {
+                                    value: /^\w+/, 
+                                    message: 'Insert a valid message please'
+                                 }})} 
+                            />
+                                {
+                                     errors.message  ? <SmallErrorMessage>{errors.message.message} </SmallErrorMessage> : ''
+                                }
+                 
                         </div>
 
                         <button className='button' type="submit">send <i className="fas fa-chevron-right"></i></button>
